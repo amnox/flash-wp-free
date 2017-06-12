@@ -6,33 +6,53 @@
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package Flash
+ * @package Corporate_Key
  */
 
+	/**
+	 * Hook - corporate_key_action_after_content.
+	 *
+	 * @hooked corporate_key_content_end - 10
+	 */
+	do_action( 'corporate_key_action_after_content' );
 ?>
 
-		</div><!-- .tg-container -->
-	</div><!-- #content -->
+	<?php
+	/**
+	 * Hook - corporate_key_action_before_footer.
+	 *
+	 * @hooked corporate_key_add_footer_widgets - 5
+	 * @hooked corporate_key_footer_start - 10
+	 */
+	do_action( 'corporate_key_action_before_footer' );
+	?>
+	<?php
+	  /**
+	   * Hook - corporate_key_action_footer.
+	   *
+	   * @hooked corporate_key_footer_copyright - 10
+	   */
+	  do_action( 'corporate_key_action_footer' );
+	?>
+	<?php
+	/**
+	 * Hook - corporate_key_action_after_footer.
+	 *
+	 * @hooked corporate_key_footer_end - 10
+	 */
+	do_action( 'corporate_key_action_after_footer' );
+	?>
 
-	<footer id="colophon" class="footer-layout site-footer" role="contentinfo">
-		<?php get_sidebar( 'footer' ); ?>
-
-		<div id="bottom-footer">
-			<div class="tg-container">
-
-					<?php do_action( 'flash_copyright_area' ); ?>
-
-					<?php wp_nav_menu( array( 'theme_location' => 'footer', 'menu_class' => 'footer-menu', 'fallback_cb' => false, ) ); ?>
-
-			</div>
-		</div>
-	</footer><!-- #colophon -->
-	<?php if ( get_theme_mod( 'flash_disable_back_to_top', '' ) != 1 ) : ?>
-	<a href="#masthead" id="scroll-up"><i class="fa fa-chevron-up"></i></a>
-	<?php endif; ?>
-</div><!-- #page -->
+<?php
+	/**
+	 * Hook - corporate_key_action_after.
+	 *
+	 * @hooked corporate_key_page_end - 10
+	 * @hooked corporate_key_footer_goto_top - 20
+	 */
+	do_action( 'corporate_key_action_after' );
+?>
 
 <?php wp_footer(); ?>
-
 </body>
 </html>

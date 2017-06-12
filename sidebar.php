@@ -1,21 +1,23 @@
 <?php
 /**
- * The sidebar containing the right widget area.
+ * The Primary Sidebar.
  *
  * @link https://developer.wordpress.org/themes/basics/template-files/#template-partials
  *
- * @package Flash
+ * @package Corporate_Key
  */
 
-/* Show the sidebar based on selected layout */
-$layout = flash_get_layout();
-
-if ( ! is_active_sidebar( 'flash_right_sidebar' ) ) {
-	return;
-}
-
-if($layout == 'right-sidebar') { ?>
-<aside id="secondary" class="widget-area" role="complementary">
-	<?php dynamic_sidebar( 'flash_right_sidebar' ); ?>
-</aside><!-- #secondary -->
-<?php } ?>
+$default_sidebar = apply_filters( 'corporate_key_filter_default_sidebar_id', 'sidebar-1', 'primary' );
+?>
+<div id="sidebar-primary" class="widget-area sidebar" role="complementary">
+	<?php if ( is_active_sidebar( $default_sidebar ) ) : ?>
+		<?php dynamic_sidebar( $default_sidebar ); ?>
+	<?php else : ?>
+		<?php
+			/**
+			 * Hook - corporate_key_action_default_sidebar.
+			 */
+			do_action( 'corporate_key_action_default_sidebar', $default_sidebar, 'primary' );
+		?>
+	<?php endif ?>
+</div><!-- #sidebar-primary -->

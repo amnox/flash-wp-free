@@ -9,7 +9,7 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
- * @package Flash
+ * @package Corporate_Key
  */
 
 get_header(); ?>
@@ -17,41 +17,39 @@ get_header(); ?>
 	<div id="primary" class="content-area">
 		<main id="main" class="site-main" role="main">
 
-		<?php
-		if ( have_posts() ) :
+		<?php if ( have_posts() ) : ?>
+				
+			<?php /* Start the Loop */ ?>
+			<?php while ( have_posts() ) : the_post(); ?>
 
-			if ( is_home() && ! is_front_page() ) : ?>
-				<header>
-					<h1 class="page-title screen-reader-text"><?php single_post_title(); ?></h1>
-				</header>
+				<?php get_template_part( 'template-parts/content' ); ?>
+
+			<?php endwhile; ?>
 
 			<?php
-			endif;
+			/**
+			 * Hook - corporate_key_action_posts_navigation.
+			 *
+			 * @hooked: corporate_key_custom_posts_navigation - 10
+			 */
+			do_action( 'corporate_key_action_posts_navigation' ); ?>
 
-			/* Start the Loop */
-			while ( have_posts() ) : the_post();
+		<?php else : ?>
 
-				/*
-				 * Include the Post-Format-specific template for the content.
-				 * If you want to override this in a child theme, then include a file
-				 * called content-___.php (where ___ is the Post Format name) and that will be used instead.
-				 */
-				get_template_part( 'template-parts/content', get_post_format() );
+			<?php get_template_part( 'template-parts/content', 'none' ); ?>
 
-			endwhile;
-
-			the_posts_navigation();
-
-		else :
-
-			get_template_part( 'template-parts/content', 'none' );
-
-		endif; ?>
+		<?php endif; ?>
 
 		</main><!-- #main -->
 	</div><!-- #primary -->
 
 <?php
-get_sidebar();
-get_sidebar('left');
-get_footer();
+	/**
+	 * Hook - corporate_key_action_sidebar.
+	 *
+	 * @hooked: corporate_key_add_sidebar - 10
+	 */
+	do_action( 'corporate_key_action_sidebar' );
+?>
+
+<?php get_footer(); ?>

@@ -4,65 +4,52 @@
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
- * @package Flash
+ * @package Corporate_Key
  */
 
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
-	<?php
-	$blog_style = get_theme_mod( 'flash_blog_style', 'classic-layout' );
-	if ( !is_singular() ) {
-		if( $blog_style == 'classic-layout' ) {
-			$image_size = 'flash-square';
-		} elseif( $blog_style == 'full-width-archive' ){
-			$image_size = 'flash-big';
-		} else {
-			$image_size = 'flash-grid';
-		}
-	} else {
-		$image_size = 'full';
-	}
-	?>
-	<?php if( has_post_thumbnail() ) : ?>
-	<div class="entry-thumbnail">
-		<?php the_post_thumbnail( $image_size ); ?>
-	</div>
+	<?php if ( has_post_thumbnail() ) : ?>
+		<?php
+		$args = array(
+			'class' => 'corporate-key-post-thumb aligncenter',
+		);
+		the_post_thumbnail( 'large', $args );
+		?>
 	<?php endif; ?>
 
-	<div class="entry-content-block">
-		<header class="entry-header">
-			<?php
-			if ( !is_single() ) :
-				the_title( '<h2 class="entry-title"><a href="' . esc_url( get_permalink() ) . '" rel="bookmark">', '</a></h2>' );
-			endif;
-			?>
-		</header><!-- .entry-header -->
-
-		<?php
-		if ( 'post' === get_post_type() ) : ?>
+	<header class="entry-header">
+		<?php the_title( sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h2>' ); ?>
+		<?php if ( 'post' === get_post_type() ) : ?>
 		<div class="entry-meta">
-			<?php flash_posted_on(); ?>
-		</div><!-- .entry-meta -->
-		<?php
-		endif; ?>
+			<?php corporate_key_posted_on(); ?>
+		</div>
+		<?php endif; ?>
+	</header><!-- .entry-header -->
 
-		<div class="entry-content">
-			<?php if ( is_singular() ) : ?>
-				<?php the_content(); ?>
-			<?php else: ?>
-				<?php the_excerpt(); ?>
-			<?php endif; ?>
+	<div class="entry-content">
+		<?php $archive_layout = corporate_key_get_option( 'archive_layout' ); ?>
+
+		<?php if ( 'full' === $archive_layout ) : ?>
 			<?php
-				wp_link_pages( array(
-					'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'flash' ),
-					'after'  => '</div>',
-				) );
-			?>
-		</div><!-- .entry-content -->
+			the_content( sprintf(
+				/* translators: %s: Name of current post. */
+				wp_kses( __( 'Continue reading %s <span class="meta-nav">&rarr;</span>', 'corporate-key' ), array( 'span' => array( 'class' => array() ) ) ),
+				the_title( '<span class="screen-reader-text">"', '"</span>', false )
+			) );
 
-		<footer class="entry-footer">
-			<?php flash_entry_footer(); ?>
-		</footer><!-- .entry-footer -->
-	</div>
+			wp_link_pages( array(
+				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'corporate-key' ),
+				'after'  => '</div>',
+			) );
+			?>
+		<?php else : ?>
+			<?php the_excerpt(); ?>
+		<?php endif; ?>
+	</div><!-- .entry-content -->
+
+	<footer class="entry-footer">
+		<?php corporate_key_entry_footer(); ?>
+	</footer><!-- .entry-footer -->
 </article><!-- #post-## -->
